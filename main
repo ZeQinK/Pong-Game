@@ -119,6 +119,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pastelyellow = (253, 253, 150)
 soloimg = pygame.image.load("Solo.jpg").convert_alpha()
 duoimg = pygame.image.load("Duo.jpg").convert_alpha()
+quitimg = pygame.image.load("Quit.jpg").convert_alpha()
 ball = pygame.Rect(screen_width / 2 - 15, screen_height / 2 - 15, 30, 30)
 player = pygame.Rect(screen_width - 20, screen_height / 2 - 70, 10, 140)
 opponent = pygame.Rect(10, screen_height / 2 - 70, 10, 140)
@@ -204,6 +205,10 @@ class Game:
                         player_speed += 10
                     if event.key == pygame.K_RIGHT:
                         player_speed -= 10
+                    if event.key == pygame.K_d:
+                        duo_opponent_speed += 10
+                    if event.key == pygame.K_a:
+                        duo_opponent_speed -= 10
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_DOWN:
                         player_speed -= 7
@@ -213,6 +218,14 @@ class Game:
                         duo_opponent_speed -= 7
                     if event.key == pygame.K_w:
                         duo_opponent_speed += 7
+                    if event.key == pygame.K_LEFT:
+                        player_speed -= 10
+                    if event.key == pygame.K_RIGHT:
+                        player_speed += 10
+                    if event.key == pygame.K_d:
+                        duo_opponent_speed -= 10
+                    if event.key == pygame.K_a:
+                        duo_opponent_speed += 10
 
             pygame.display.flip()
             clock.tick(60)
@@ -273,6 +286,10 @@ class Game:
             screen.fill(pastelyellow)
             endtext = game_font.render("Congrats to the player on the right, you won the game!", True, black)
             screen.blit(endtext, (80, 300))
+            quit_button = button.Button(400, 500, quitimg, 0.15)
+            if quit_button.draw(screen):
+                pygame.quit()
+                sys.exit()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -286,6 +303,10 @@ class Game:
             screen.fill(pastelyellow)
             losetext = game_font.render("Congrats to the player on the left, you won the game!", True, black)
             screen.blit(losetext, (80, 300))
+            quit_button = button.Button(400, 500, quitimg, 0.15)
+            if quit_button.draw(screen):
+                pygame.quit()
+                sys.exit()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
