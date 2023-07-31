@@ -1,6 +1,7 @@
 import pygame, sys, random
 import button
 
+
 def solo_ball_animation():
     global ball_speed_x, ball_speed_y, player_score, opponent_score, score_time
     ball.x += ball_speed_x
@@ -12,19 +13,20 @@ def solo_ball_animation():
     if ball.left <= 0:
         pygame.mixer.Sound.play(score_sound)
         player_score += 1
-        if player_score == 21:
+        if player_score == 5:
             Game.win()
         score_time = pygame.time.get_ticks()
     if ball.right >= screen_width:
         pygame.mixer.Sound.play(score_sound)
         opponent_score += 1
-        if opponent_score == 21:
+        if opponent_score == 5:
             Game.lose()
         score_time = pygame.time.get_ticks()
 
     if ball.colliderect(player) or ball.colliderect(opponent):
         pygame.mixer.Sound.play(pong_sound)
         ball_speed_x *= -1
+
 
 def duo_ball_animation():
     global ball_speed_x, ball_speed_y, player_score, opponent_score, score_time
@@ -37,19 +39,20 @@ def duo_ball_animation():
     if ball.left <= 0:
         pygame.mixer.Sound.play(score_sound)
         player_score += 1
-        if player_score > 21:
+        if player_score == 5:
             Game.win()
         score_time = pygame.time.get_ticks()
     if ball.right >= screen_width:
         pygame.mixer.Sound.play(score_sound)
         opponent_score += 1
-        if opponent_score > 21:
+        if opponent_score == 5:
             Game.lose()
         score_time = pygame.time.get_ticks()
 
     if ball.colliderect(player) or ball.colliderect(duo_opponent):
         pygame.mixer.Sound.play(pong_sound)
         ball_speed_x *= -1
+
 
 def player_animation():
     global player_speed
@@ -58,6 +61,7 @@ def player_animation():
         player.top = 0
     if player.bottom >= screen_height:
         player.bottom = screen_height
+
 
 def solo_opponent_animation():
     if opponent.top < ball.y:
@@ -69,6 +73,7 @@ def solo_opponent_animation():
     if opponent.bottom >= screen_height:
         opponent.bottom = screen_height
 
+
 def duo_opponent_animation():
     global duo_opponent_speed
     duo_opponent.y += duo_opponent_speed
@@ -76,6 +81,7 @@ def duo_opponent_animation():
         duo_opponent.top = 0
     if duo_opponent.bottom >= screen_height:
         duo_opponent.bottom = screen_height
+
 
 def ball_restart():
     global ball_speed_x, ball_speed_y, score_time
@@ -85,20 +91,21 @@ def ball_restart():
 
     if current_time - score_time < 700:
         number_three = game_font.render("3", False, black)
-        screen.blit(number_three, (screen_width/2 - 10, screen_height/2 + 20))
+        screen.blit(number_three, (screen_width / 2 - 10, screen_height / 2 + 20))
     if 700 < current_time - score_time < 1400:
-        number_two= game_font.render("2", False, black)
-        screen.blit(number_two, (screen_width/2 - 10, screen_height/2 + 20))
+        number_two = game_font.render("2", False, black)
+        screen.blit(number_two, (screen_width / 2 - 10, screen_height / 2 + 20))
     if 1400 < current_time - score_time < 2100:
-        number_one= game_font.render("1", False, black)
-        screen.blit(number_one, (screen_width/2 - 10, screen_height/2 + 20))
+        number_one = game_font.render("1", False, black)
+        screen.blit(number_one, (screen_width / 2 - 10, screen_height / 2 + 20))
 
     if current_time - score_time < 2100:
         ball_speed_x, ball_speed_y = 0, 0
     else:
-        ball_speed_y = 5* random.choice((1, -1))
-        ball_speed_x = 5* random.choice((1, -1))
+        ball_speed_y = 6 * random.choice((1, -1))
+        ball_speed_x = 6 * random.choice((1, -1))
         score_time = None
+
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
@@ -108,17 +115,17 @@ screen_height = 800
 screen_width = 1000
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-#initializing variable 
+# initializing variable
 pastelyellow = (253, 253, 150)
 soloimg = pygame.image.load("Solo.jpg").convert_alpha()
 duoimg = pygame.image.load("Duo.jpg").convert_alpha()
-ball = pygame.Rect(screen_width/2 - 15, screen_height /2 -15, 30, 30)
-player = pygame.Rect(screen_width - 20, screen_height / 2 -70, 10, 140)
-opponent = pygame.Rect(10, screen_height / 2 -70, 10, 140)
-duo_opponent = pygame.Rect(10, screen_height / 2 -70, 10, 140)
+ball = pygame.Rect(screen_width / 2 - 15, screen_height / 2 - 15, 30, 30)
+player = pygame.Rect(screen_width - 20, screen_height / 2 - 70, 10, 140)
+opponent = pygame.Rect(10, screen_height / 2 - 70, 10, 140)
+duo_opponent = pygame.Rect(10, screen_height / 2 - 70, 10, 140)
 
-ball_speed_x = 5 * random.choice((1, -1))
-ball_speed_y = 5 * random.choice((1, -1))
+ball_speed_x = 6 * random.choice((1, -1))
+ball_speed_y = 6 * random.choice((1, -1))
 player_speed = 0
 opponent_speed = 7
 duo_opponent_speed = 0
@@ -130,9 +137,11 @@ game_font = pygame.font.Font("freesansbold.ttf", 32)
 
 score_time = None
 
-#sound animation
+# sound animation
 pong_sound = pygame.mixer.Sound("mixkit-game-ball-tap-2073.wav")
 score_sound = pygame.mixer.Sound("mixkit-instant-win-2021.wav")
+
+
 class Game:
     def homepage():
         while True:
@@ -191,6 +200,10 @@ class Game:
                         duo_opponent_speed += 7
                     if event.key == pygame.K_w:
                         duo_opponent_speed -= 7
+                    if event.key == pygame.K_LEFT:
+                        player_speed += 10
+                    if event.key == pygame.K_RIGHT:
+                        player_speed -= 10
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_DOWN:
                         player_speed -= 7
@@ -201,10 +214,8 @@ class Game:
                     if event.key == pygame.K_w:
                         duo_opponent_speed += 7
 
-
             pygame.display.flip()
             clock.tick(60)
-
 
     def solo():
         global player_speed
@@ -239,21 +250,29 @@ class Game:
                         player_speed += 7
                     if event.key == pygame.K_UP:
                         player_speed -= 7
+                    if event.key == pygame.K_LEFT:
+                        player_speed += 10
+                    if event.key == pygame.K_RIGHT:
+                        player_speed -= 10
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_DOWN:
                         player_speed -= 7
                     if event.key == pygame.K_UP:
                         player_speed += 7
+                    if event.key == pygame.K_LEFT:
+                        player_speed -= 10
+                    if event.key == pygame.K_RIGHT:
+                        player_speed += 10
 
             pygame.display.flip()
             clock.tick(60)
-            
-    #final output
+
+    # final output
     def win():
         while True:
             screen.fill(pastelyellow)
-            endtext = game_font.render("Congrats, you won the game!", True, black)
-            screen.blit(endtext, (200, 300))
+            endtext = game_font.render("Congrats to the player on the right, you won the game!", True, black)
+            screen.blit(endtext, (80, 300))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -265,8 +284,8 @@ class Game:
     def lose():
         while True:
             screen.fill(pastelyellow)
-            losetext = game_font.render("Try harder next time!", True, black)
-            screen.blit(losetext, (200, 300))
+            losetext = game_font.render("Congrats to the player on the left, you won the game!", True, black)
+            screen.blit(losetext, (80, 300))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -274,4 +293,6 @@ class Game:
 
             pygame.display.flip()
             clock.tick(60)
+
+
 Game.homepage()
